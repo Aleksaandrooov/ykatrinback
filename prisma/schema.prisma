@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id Int @id @unique @default(autoincrement())
+
+  name        String
+  description String?
+
+  product Product[]
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Post {
+  id Int @id @unique @default(autoincrement())
+
+  title       String
+  description String?
+  tags        String[]
+  imgPanorama String
+
+  // createAt DateTime @default(now())
+  // updateAt DateTime @updatedAt
+}
+
+model Product {
+  id Int @id @unique @default(autoincrement())
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  title       String
+  description String?
+  Calories    String?
+  img         String[] // изменить на imgPerView String
+  imgPanorama String[] // изменить на просто img String[]
+}
+
+model User {
+  id Int @id @unique @default(autoincrement())
+
+  login    String
+  password String
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model ipBlocked {
+  id Int @id @unique @default(autoincrement())
+
+  ip String
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
